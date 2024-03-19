@@ -9,7 +9,8 @@ import UseGetMe from "@/app/hooks/UseGetMe";
 
 function SideNav() {
   const [isOpen, setIsOpen] = useState(true);
-  const pathname = usePathname();
+  let pathname = usePathname();
+  pathname = "/" + pathname.split("/")[1];
 
   const toggleNav = () => {
     setIsOpen(!isOpen);
