@@ -10,9 +10,10 @@ export const roles = v.union(
 export default defineSchema({
   users: defineTable({
     tokenIdentifier: v.string(),
-    fullName: v.optional(v.string()),
-    type: v.optional(roles),
-    pictureUrl: v.optional(v.string()),
+    fullName: v.string(),
+    type: roles,
+    pictureUrl: v.string(),
+    email: v.string(),
   }).index("by_token", ["tokenIdentifier"]),
 
   admins: defineTable({

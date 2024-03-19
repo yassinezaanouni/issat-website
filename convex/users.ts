@@ -30,6 +30,7 @@ export const store = mutation({
         tokenIdentifier: identity.tokenIdentifier,
         type: "",
         pictureUrl: identity.pictureUrl,
+        email: identity.email,
       });
     }
     // If we've seen this identity before but the name has changed, patch the value.
