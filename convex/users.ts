@@ -80,6 +80,17 @@ export const getMe = query({
   },
 });
 
+export const deleteUser = mutation({
+  args: {
+    idTable1: v.id("students") || v.id("teachers"),
+    idTable2: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.idTable1);
+    await ctx.db.delete(args.idTable2);
+  },
+});
+
 // Students
 export const createStudent = mutation({
   args: {

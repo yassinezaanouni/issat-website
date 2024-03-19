@@ -5,6 +5,8 @@ import Header from "@/components/Header";
 import ConvexClientProvider from "./ConvexClientProvider";
 import { Toaster } from "@/components/ui/toaster";
 import SideNav from "@/components/SideNav";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import Logo from "@/components/ui/Logo";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,9 +30,20 @@ export default function RootLayout({
         <Toaster />
 
         <ConvexClientProvider>
-          <Header />
+          <SignedOut>
+            <div className="bg-primary">
+              <header className=" flex items-center justify-between p-6 text-background">
+                <Logo />
+              </header>
+            </div>
+          </SignedOut>
+          <SignedIn>
+            <Header />
+          </SignedIn>
           <div className="flex min-h-screen">
-            <SideNav />
+            <SignedIn>
+              <SideNav />
+            </SignedIn>
             <main className="flex-1 p-20">{children}</main>
           </div>
         </ConvexClientProvider>

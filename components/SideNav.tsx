@@ -22,7 +22,7 @@ function SideNav() {
     <div className="relative min-w-10 overflow-hidden">
       {isOpen && (
         <div
-          className={`relative flex h-full w-44 flex-col gap-8 bg-gray-200 px-4 py-20 font-medium shadow-xl  lg:w-60 lg:text-lg`}
+          className={`relative flex h-full w-44 flex-col gap-8 bg-gray-200 px-6 py-20 font-medium shadow-xl  lg:w-60 lg:text-lg`}
         >
           {!user?.type && (
             <>
@@ -51,7 +51,7 @@ function SideNav() {
         </div>
       )}
 
-      <button onClick={toggleNav} className="absolute left-4 top-4">
+      <button onClick={toggleNav} className="absolute left-6 top-4">
         {isOpen ? <X /> : <Menu />}
       </button>
     </div>

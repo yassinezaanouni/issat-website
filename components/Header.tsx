@@ -7,14 +7,16 @@ import UseGetMe from "@/app/hooks/UseGetMe";
 function Header() {
   const { user } = UseGetMe();
   return (
-    <header className="container flex items-center justify-between bg-primary py-6 text-background">
-      <Logo />
-      <div className="flex flex-col items-center uppercase">
-        <p className="font-bold">{user?.fullName}</p>
-        <p>{user?.type}</p>
-      </div>
-      <UserButton />
-    </header>
+    <div className="bg-primary">
+      <header className=" flex items-center justify-between p-6 text-background">
+        <Logo />
+        <div className="flex flex-col items-center uppercase">
+          <p className="font-bold">{user?.fullName}</p>
+          <p>{user?.type}</p>
+        </div>
+        <UserButton />
+      </header>
+    </div>
   );
 }
 

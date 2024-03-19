@@ -1,7 +1,7 @@
 "use client";
 import Spinner from "@/components/ui/Spinner";
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 
 import {
   Table,
@@ -18,13 +18,21 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Modal from "@/components/Modal/Modal";
 import { formatCamelCase } from "@/lib/format";
+import { Id } from "@/convex/_generated/dataModel";
 
 export default function page({ params }: { params: { id: string } }) {
   const students = useQuery(api.users.getStudentsGroup, {
     groupId: params.id,
   });
+  const deleteStudent = useMutation(api.users.deleteUser);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+
+  const onDeleteStudent = (idTable1: Id<"students">, idTable2: Id<"users">) => {
+    let text = "Voulez-vous vraiment supprimer cet étudiant ?";
+    if (confirm(text)) deleteStudent({ idTable1, idTable2 });
+  };
+
   return (
     <div>
       {students == undefined ? (
@@ -62,7 +70,11 @@ export default function page({ params }: { params: { id: string } }) {
                   >
                     <Eye size={20} />
                   </Button>
-                  <Button size="sm" variant="ghost">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => onDeleteStudent(student._id, student.user)}
+                  >
                     <Trash2 className="text-destructive" size={20} />
                   </Button>
                 </TableCell>
