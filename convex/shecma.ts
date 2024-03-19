@@ -14,4 +14,34 @@ export default defineSchema({
     type: v.optional(roles),
     pictureUrl: v.optional(v.string()),
   }).index("by_token", ["tokenIdentifier"]),
+
+  admins: defineTable({
+    name: v.string(),
+    pictureUrl: v.string(),
+    tokenIdentifier: v.string(),
+  }),
+  departments: defineTable({
+    description: v.string(),
+    name: v.string(),
+  }),
+  filieres: defineTable({
+    department: v.id("departments"),
+    description: v.string(),
+    name: v.string(),
+  }),
+  groups: defineTable({
+    description: v.string(),
+    filiereId: v.id("filieres"),
+    level: v.float64(),
+    name: v.string(),
+  }),
+  students: defineTable({
+    address: v.string(),
+    birthDate: v.string(),
+    city: v.string(),
+    gender: v.string(),
+    group: v.id("groups"),
+    phone: v.string(),
+    user: v.id("users"),
+  }),
 });

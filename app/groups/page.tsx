@@ -31,7 +31,7 @@ function page() {
           <Spinner />
         ) : groups.length > 0 ? (
           groups?.map((group) => (
-            <Link href={`/groups/${group.id}`}>
+            <Link href={`/groups/${group._id}`}>
               <Card className="w-60 cursor-pointer transition-all hover:scale-[1.02]">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-base">{group.name}</CardTitle>

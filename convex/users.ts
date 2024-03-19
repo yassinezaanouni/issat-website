@@ -46,6 +46,40 @@ export const store = mutation({
   },
 });
 
+export async function getUser(ctx: any, tokenIdentifier: string) {
+  const user = await ctx.db
+    .query("users")
+    .filter((q: any) => q.eq(q.field("tokenIdentifier"), tokenIdentifier))
+    .unique();
+
+  if (!user) {
+    return null;
+  }
+
+  return user;
+}
+
+export const getMe = query({
+  async handler(ctx, args) {
+    if (args.isLoading) return;
+
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError("Called getUser without authentication present");
+    }
+
+    const user = await getUser(ctx, identity.tokenIdentifier);
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  },
+});
+
+// Students
 export const createStudent = mutation({
   args: {
     address: v.string(),
@@ -85,35 +119,22 @@ export const createStudent = mutation({
   },
 });
 
-export async function getUser(ctx: any, tokenIdentifier: string) {
-  const user = await ctx.db
-    .query("users")
-    .filter((q: any) => q.eq(q.field("tokenIdentifier"), tokenIdentifier))
-    .unique();
-
-  if (!user) {
-    return null;
-  }
-
-  return user;
-}
-
-export const getMe = query({
-  async handler(ctx, args) {
-    if (args.isLoading) return;
-
-    const identity = await ctx.auth.getUserIdentity();
-
-    if (!identity) {
-      throw new ConvexError("Called getUser without authentication present");
-    }
-
-    const user = await getUser(ctx, identity.tokenIdentifier);
-
-    if (!user) {
-      return null;
-    }
-
-    return user;
+export const getStudentsGroup = query({
+  args: {
+    groupId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const students = await ctx.db
+      .query("students")
+      .filter((q) => q.eq(q.field("group"), args.groupId))
+      .collect();
+    const users: any[] = [];
+    await Promise.all(
+      students.map(async (student) => {
+        const user = await ctx.db.get(student.user);
+        users.push({ ...user, ...student });
+      }),
+    );
+    return users;
   },
 });
