@@ -13,8 +13,13 @@ import {
 import { DatePicker } from "@/components/ui/DatePicker";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { UserButton } from "@clerk/nextjs";
 
 function page() {
+  // const createStudent = useMutation(api.users.createStudent);
+
   const [birthDate, setBirthDate] = React.useState<Date>();
   const [gender, setGender] = React.useState<string>("");
   const [profilePhoto, setProfilePhoto] = React.useState<Blob | MediaSource>();
@@ -23,9 +28,25 @@ function page() {
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
 
+  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   createStudent({
+  //     email,
+  //     password,
+  //     firstName,
+  //     lastName,
+  //   });
+  // };
+
   return (
     <section className="container">
-      <form className="mx-auto flex flex-col items-center justify-center overflow-hidden py-40">
+      <div className="h-screen">
+        <UserButton />
+      </div>
+      <form
+        // onSubmit={onSubmit}
+        className="mx-auto flex flex-col items-center justify-center overflow-hidden py-40"
+      >
         <div className="relative size-20 rounded-full border-2 border-input">
           {profilePhoto ? (
             <Image

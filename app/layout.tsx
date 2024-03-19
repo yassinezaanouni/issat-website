@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins as FontSans } from "next/font/google";
 import Header from "@/components/Header";
+import ConvexClientProvider from "./ConvexClientProvider";
+import { Toaster } from "@/components/ui/toaster";
+import SideNav from "@/components/SideNav";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,8 +25,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={fontSans.variable}>
-        <Header />
-        <main>{children}</main>
+        <Toaster />
+
+        <ConvexClientProvider>
+          <Header />
+          <div className="flex min-h-screen">
+            <SideNav />
+            <main className="w-full">{children}</main>
+          </div>
+        </ConvexClientProvider>
       </body>
     </html>
   );
