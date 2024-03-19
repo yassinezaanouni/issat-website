@@ -26,7 +26,7 @@ export const store = mutation({
     if (!user) {
       // If it's a new identity, create a new `User`.
       return await ctx.db.insert("users", {
-        name: identity.name!,
+        fullName: identity.name!,
         tokenIdentifier: identity.tokenIdentifier,
         type: "",
         pictureUrl: identity.pictureUrl,
@@ -38,7 +38,7 @@ export const store = mutation({
       user.pictureUrl !== identity.pictureUrl
     ) {
       await ctx.db.patch(user._id, {
-        name: identity.name,
+        fullName: identity.name,
         pictureUrl: identity.pictureUrl,
       });
     }
@@ -52,6 +52,8 @@ export const createStudent = mutation({
     phone: v.string(),
     gender: v.string(),
     birthDate: v.string(),
+    city: v.string(),
+    group: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -75,6 +77,8 @@ export const createStudent = mutation({
         birthDate: args.birthDate,
         address: args.address,
         phone: args.phone,
+        city: args.city,
+        group: args.group,
       });
     }
     throw new ConvexError("Student already exists");

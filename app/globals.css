@@ -16,7 +16,7 @@
     --primary: 205 95% 36%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 170.1369863013699 100% 28.627450980392155%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
@@ -36,7 +36,7 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
-    color: hsl(88 77% 78%);
+    color: hsl(162, 94%, 41%);
   }
 
   .dark {
@@ -77,4 +77,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+.cl-avatarBox {
+  width: 50px;
+  height: 50px;
 }

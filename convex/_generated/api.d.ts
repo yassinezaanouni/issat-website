@@ -14,6 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as groups from "../groups.js";
 import type * as shecma from "../shecma.js";
 import type * as users from "../users.js";
 
@@ -26,6 +27,7 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  groups: typeof groups;
   shecma: typeof shecma;
   users: typeof users;
 }>;

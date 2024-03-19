@@ -24,6 +24,7 @@ import UseGetMe from "@/app/hooks/UseGetMe";
 
 function page() {
   const createStudent = useMutation(api.users.createStudent);
+  const groups = useQuery(api.groups.getGroups);
   const { user } = UseGetMe();
 
   const router = useRouter();
@@ -32,16 +33,20 @@ function page() {
   const [gender, setGender] = React.useState<string>("");
   const [address, setAddress] = React.useState<string>("");
   const [phone, setPhone] = React.useState<string>("");
+  const [selectedGroupId, setSelectedGroupId] = React.useState<string>("");
+  const [city, setCity] = React.useState<string>("");
   const [error, setError] = React.useState<string>("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!city) return setError("Veuillez entrer votre ville");
     if (!address) return setError("Veuillez entrer votre adresse");
     if (!phone || phone.length != 8)
       return setError("Veuillez entrer un numéro de téléphone valide");
     if (!gender) return setError("Veuillez entrer votre genre");
     if (!birthDate) return setError("Veuillez entrer votre date de naissance");
+    if (!selectedGroupId) return setError("Veuillez choisir un groupe");
     setError("");
     try {
       await createStudent({
@@ -49,6 +54,8 @@ function page() {
         phone,
         gender,
         birthDate: birthDate.toISOString(),
+        city,
+        group: selectedGroupId,
       });
       toast({
         title: "Succès",
@@ -65,6 +72,11 @@ function page() {
       });
     }
   };
+
+  if (user?.type) {
+    router.push("/");
+    return null;
+  }
 
   return (
     <section className="container flex min-h-[80vh] items-center justify-center">
@@ -84,19 +96,26 @@ function page() {
             />
           </div>
           <p className="mt-2 h-2 text-sm text-primary">{user.fullName}</p>
-          <div className="mt-8 flex max-w-[40rem] flex-wrap items-center justify-center gap-10 ">
-            <InputFloatingLabel
+          <div className="mt-8 flex max-w-[40rem] flex-wrap items-center justify-center gap-6 ">
+            <Input
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="Ville"
+              name="ville"
+              required
+              className="w-full min-w-[10rem] max-w-[45%]"
+            />
+            <Input
               onChange={(e) => setAddress(e.target.value)}
-              label="Adresse"
+              placeholder="Adresse"
               name="address"
               required
               className="w-full min-w-[10rem] max-w-[45%]"
             />
-            <InputFloatingLabel
+            <Input
               onChange={(e) => {
                 setPhone(e.target.value);
               }}
-              label="Téléphone"
+              placeholder="Téléphone"
               name="phone"
               type="number"
               required
@@ -113,7 +132,7 @@ function page() {
                 </SelectContent>
               </Select>
             </div>
-            <input
+            <Input
               type="date"
               placeholder="Enter BirthDate"
               onChange={(e) =>
@@ -121,9 +140,23 @@ function page() {
               }
               name="birthdate"
               max={new Date().toISOString().split("T")[0]}
-              className="w-full min-w-[10rem] max-w-[45%] border-b-2 border-input py-1.5 "
+              className="w-full min-w-[10rem] max-w-[45%]  "
             />
 
+            <div className="w-full min-w-[10rem] max-w-[45%]">
+              <Select onValueChange={(value) => setSelectedGroupId(value)}>
+                <SelectTrigger className="">
+                  <SelectValue placeholder="Groupes" />
+                </SelectTrigger>
+                <SelectContent>
+                  {groups?.map((group) => (
+                    <SelectItem key={group._id} value={group._id}>
+                      {group.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             <div className=" flex flex-col items-center justify-center gap-6">
               {<p className="text-sm text-red-500">{error}</p>}
               <Button className="w-40 max-w-full rounded-md bg-primary py-4 text-background">

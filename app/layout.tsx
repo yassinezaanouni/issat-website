@@ -31,7 +31,7 @@ export default function RootLayout({
           <Header />
           <div className="flex min-h-screen">
             <SideNav />
-            <main className="w-full">{children}</main>
+            <main className="flex-1 p-20">{children}</main>
           </div>
         </ConvexClientProvider>
       </body>
